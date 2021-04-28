@@ -28,6 +28,16 @@ const useStyles = makeStyles((theme) => ({
 function Signup() {
     const classes = useStyles()
 
+    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [password, setPassword] = useState("")
+
+    function handleOnSubmit(e) {
+        e.preventDefault()
+    }
+
     return (
         <Grid
             container
@@ -41,14 +51,15 @@ function Signup() {
                 <form
                     className={classes.root}
                     autoComplete="on"
+                    onsubmit={handleOnSubmit}
                 >
                     <FormControl error={null}>
                         <InputLabel htmlFor="component-email">Email</InputLabel>
                         <Input
                             id="component-email"
                             name="email"
-                            value={""}
-                            onChange={null}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             onBlur={null}
                         />
                         <FormHelperText id="component-error-text">
@@ -59,10 +70,9 @@ function Signup() {
                         <InputLabel htmlFor="component-username">Username</InputLabel>
                         <Input
                             id="component-username"
-                            name="Username"
-                            value={null}
-                            onChange={null}
-                            onChange={null}
+                            name="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             onBlur={null}
                         />
                         <FormHelperText id="component-error-text">
@@ -76,8 +86,8 @@ function Signup() {
                         <Input
                             id="component-firstName"
                             name="First Name"
-                            value={null}
-                            onChange={null}
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                             onBlur={null}
                         />
                         <FormHelperText id="component-error-text">
@@ -91,8 +101,8 @@ function Signup() {
                         <Input
                             id="component-lastName"
                             name="Last Name"
-                            value={null}
-                            onChange={null}
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
                             onBlur={null}
                         />
                         <FormHelperText id="component-error-text">
@@ -107,8 +117,8 @@ function Signup() {
                             type="password"
                             id="component-password"
                             name="password"
-                            value={null}
-                            onChange={null}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             onBlur={null}
                         />
                         <FormHelperText id="component-error-text">
