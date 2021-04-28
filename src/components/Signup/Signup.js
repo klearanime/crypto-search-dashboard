@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -14,6 +15,10 @@ import {
 
 import MuiAlert from "@material-ui/lab/Alert";
 
+import useInputHooks from "../hooks/useInputHooks";
+import useEmailHooks from "../hooks/useEmailHooks";
+import usePasswordHooks from "../hooks/usePasswordHooks";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,20 +28,93 @@ const useStyles = makeStyles((theme) => ({
             width: 350,
         },
     },
-}))
+}));
 
 function Signup() {
-    const classes = useStyles()
+    const classes = useStyles();
 
-    const [email, setEmail] = useState("")
-    const [username, setUsername] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [password, setPassword] = useState("")
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    const [
+        email,
+        setEmail,
+        isEmailError,
+        errorMessage,
+        isEmailOnBlur,
+        handleEmailOnBlur,
+    ] = useEmailHooks();
+
+    const [
+        username,
+        setUsername,
+        inputUsernameError,
+        errorUsernameMessage,
+        isUsernameOnBlur,
+        handleUsernameOnBlur,
+    ] = useInputHooks();
+
+    const [
+        firstName,
+        setFirstName,
+        inputFirstNameError,
+        errorFirstNameMessage,
+        isFirstNameOnBlur,
+        handleFirstnameOnBlur,
+    ] = useInputHooks();
+
+    const [
+        lastName,
+        setLastName,
+        inputLastNameError,
+        errorLastNameMessage,
+        isLastnameOnBlur,
+        handleLastnameOnBlur,
+    ] = useInputHooks();
+
+    const [
+        password,
+        setPassword,
+        passwordError,
+        errorPasswordMessage,
+        passwordOnBlur,
+        handlePasswordOnBlur,
+    ] = usePasswordHooks();
 
     function handleOnSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
+        console.log(username);
+        console.log(firstName);
+        console.log(email);
+        console.log(lastName);
+        console.log(password);
     }
+
+    useEffect(() => {
+        if (
+            inputUsernameError === false &&
+            inputFirstNameError === false &&
+            inputLastNameError === false &&
+            passwordError === false &&
+            isEmailError === false
+        ) {
+            setIsButtonDisabled(false);
+        } else {
+            setIsButtonDisabled(true);
+            return;
+        }
+
+        if (
+            username.length === 0 ||
+            firstName.length === 0 ||
+            email.length === 0 ||
+            lastName.length === 0 ||
+            password.length === 0
+        ) {
+            setIsButtonDisabled(true);
+        } else {
+            setIsButtonDisabled(false);
+        }
+    }, [username, email, firstName, password, lastName]);
 
     return (
         <Grid
@@ -51,78 +129,80 @@ function Signup() {
                 <form
                     className={classes.root}
                     autoComplete="on"
-                    onsubmit={handleOnSubmit}
+                    onSubmit={handleOnSubmit}
                 >
-                    <FormControl error={null}>
+                    <FormControl error={isEmailError}>
                         <InputLabel htmlFor="component-email">Email</InputLabel>
                         <Input
                             id="component-email"
                             name="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            onBlur={null}
+                            onChange={(e) => setEmail(e)}
+                            onBlur={() => handleEmailOnBlur()}
                         />
                         <FormHelperText id="component-error-text">
+                            {isEmailError && errorMessage}
                         </FormHelperText>
                     </FormControl>
                     <br />
-                    <FormControl error={null}>
+                    <FormControl error={inputUsernameError}>
                         <InputLabel htmlFor="component-username">Username</InputLabel>
                         <Input
                             id="component-username"
-                            name="username"
+                            name="Username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            onBlur={null}
+                            onChange={null}
+                            onChange={(e) => setUsername(e)}
+                            onBlur={() => handleUsernameOnBlur()}
                         />
                         <FormHelperText id="component-error-text">
-                            {}
+                            {inputUsernameError && errorUsernameMessage}
                         </FormHelperText>
                     </FormControl>
 
                     <br />
-                    <FormControl error={null}>
+                    <FormControl error={inputFirstNameError}>
                         <InputLabel htmlFor="component-firstName">First Name</InputLabel>
                         <Input
                             id="component-firstName"
                             name="First Name"
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            onBlur={null}
+                            onChange={(e) => setFirstName(e)}
+                            onBlur={() => handleFirstnameOnBlur()}
                         />
                         <FormHelperText id="component-error-text">
-                            {}
+                            {inputFirstNameError && errorFirstNameMessage}
                         </FormHelperText>
                     </FormControl>
 
                     <br />
-                    <FormControl error={null}>
+                    <FormControl error={inputLastNameError}>
                         <InputLabel htmlFor="component-lastName">Last Name</InputLabel>
                         <Input
                             id="component-lastName"
                             name="Last Name"
                             value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            onBlur={null}
+                            onChange={(e) => setLastName(e)}
+                            onBlur={() => handleLastnameOnBlur()}
                         />
                         <FormHelperText id="component-error-text">
-                            {null}
+                            {inputLastNameError && errorLastNameMessage}
                         </FormHelperText>
                     </FormControl>
 
                     <br />
-                    <FormControl error={null}>
+                    <FormControl error={passwordError}>
                         <InputLabel htmlFor="component-password">Password</InputLabel>
                         <Input
                             type="password"
                             id="component-password"
                             name="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            onBlur={null}
+                            onChange={(e) => setPassword(e)}
+                            onBlur={() => handlePasswordOnBlur()}
                         />
                         <FormHelperText id="component-error-text">
-                            
+                            {passwordError && errorPasswordMessage}
                         </FormHelperText>
                     </FormControl>
 
@@ -131,14 +211,14 @@ function Signup() {
                         variant="contained"
                         color="primary"
                         type="submit"
-                        disabled={null}
+                        disabled={isButtonDisabled}
                     >
                         Submit
-            </Button>
+          </Button>
                 </form>
             </Grid>
         </Grid>
-    )
+    );
 }
 
 

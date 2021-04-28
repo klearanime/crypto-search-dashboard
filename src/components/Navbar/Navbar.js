@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 function Navbar() {
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <div className={classes.root}>
@@ -51,4 +51,4 @@ function Navbar() {
 
 
 
-export default Navbar;
+export default Navbar
